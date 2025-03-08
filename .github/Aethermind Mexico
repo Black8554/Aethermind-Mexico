@@ -1,0 +1,137 @@
+const express = require('express');
+const axios = require('axios');
+
+const app = express();
+app.use(express.json());
+
+// Conectar con el sistema de control del drone a través de una API externa
+app.post('/control-drone', async (req, res) => {
+  const { action, parameters } = req.body;
+  
+  try {
+    let response;
+    switch(action) {
+      case 'takeoff':
+        response = await axios.post('http://drone-api.com/takeoff', parameters);
+        break;
+      case 'land':
+        response = await axios.post('http://drone-api.com/land', parameters);
+        break;
+      default:
+        return res.status(400).send('Acción desconocida');
+    }
+    
+    res.send(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al controlar el drone');
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Servidor para control de drone corriendo en el puerto 3000');
+});
+{
+  "name": "aethermind-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "express": "^4.17.1"
+  }
+}
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Aethermind México',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Aethermind México - Móvil'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Lógica para enviar comandos al backend
+            print("Controlando el drone...");
+          },
+          child: Text('Controlar Drone'),
+        ),
+      ),
+    );
+  }
+}
+name: aethermind_mobile
+description: Una app para Aethermind México
+dependencies:
+  flutter:
+    sdk: flutter
+  # Agrega más dependencias aquí si las necesitas
+const { app, BrowserWindow } = require('electron');
+let win;
+
+function createWindow() {
+  win = new BrowserWindow({ width: 800, height: 600 });
+  win.loadFile('index.html');
+}
+
+app.whenReady().then(createWindow);
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
+});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aethermind México - Escritorio</title>
+</head>
+<body>
+  <h1>Bienvenido a Aethermind México</h1>
+  <button id="controlBtn">Controlar Drone</button>
+  <script src="renderer.js"></script>
+</body>
+</html>
+const controlBtn = document.getElementById('controlBtn');
+controlBtn.addEventListener('click', () => {
+  fetch('http://localhost:3000/control-drone', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'takeoff', parameters: {} })
+  }).then(response => response.json())
+    .then(data => alert('Drone control: ' + data.message))
+    .catch(err => console.log(err));
+});
+# Node.js
+node_modules/
+
+# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Electron
+/dist
+git add .
+git commit -m "Initial commit with backend, mobile, and desktop code"
+git push origin main
